@@ -3,7 +3,6 @@ const path = require("path");
 const { nanoid } = require("nanoid");
 
 const contactsPath = path.join(__dirname, "./contacts.json");
-
 const listContacts = async () => {
   try {
     const data = await fs.readFile(contactsPath);
@@ -12,7 +11,6 @@ const listContacts = async () => {
     console.warn(err.message);
   }
 };
-
 const getContactById = async (contactId) => {
   try {
     const contacts = await listContacts();
@@ -21,8 +19,6 @@ const getContactById = async (contactId) => {
     console.warn(err.message);
   }
 };
-
-// getContactById("qdggE76Jtbfd9eWJHrssH");
 async function updateDataFile(instance) {
   try {
     fs.writeFile(contactsPath, JSON.stringify(instance, null, 2));
@@ -46,8 +42,6 @@ const removeContact = async (contactId) => {
     console.warn(err.message);
   }
 };
-
-// removeContact("pT4Dhi6pQtbxH2gedMgQS");
 const addContact = async (body) => {
   try {
     const newContact = { id: nanoid(), ...body };
@@ -59,9 +53,6 @@ const addContact = async (body) => {
     console.warn(err.message);
   }
 };
-
-// addContact("Aneta", "aneta@aneta.com", 364623267);
-
 const updateContact = async (contactId, body) => {
   const contacts = await listContacts();
   const contactIndex = contacts.findIndex(
@@ -75,8 +66,6 @@ const updateContact = async (contactId, body) => {
     return null;
   }
 };
-
-updateContact("uzuRo-r9ReaMeH2nNSsLP", { email: "a@bc.pl" });
 
 module.exports = {
   listContacts,
