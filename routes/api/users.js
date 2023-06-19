@@ -89,7 +89,7 @@ router.get("/logout", tokenMiddleware, async (req, res) => {
 
     user.token = null;
     user.save();
-    res.status(204);
+    res.sendStatus(204);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
