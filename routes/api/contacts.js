@@ -21,10 +21,12 @@ const {
 
 router.get("/", tokenMiddleware, async (req, res) => {
   try {
+    console.log(req.user.userId);
     const contacts = await listContacts(req.user.userId);
 
-    if (!contacts || []) {
-      res.sendStatus(204);
+    if (!contacts || contacts.length === 0) {
+      console.log("no contacts");
+      res.status(204);
     }
 
     res.status(200).json(contacts);
