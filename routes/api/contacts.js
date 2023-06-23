@@ -23,7 +23,7 @@ router.get("/", tokenMiddleware, async (req, res) => {
   try {
     const contacts = await listContacts(req.user.userId);
 
-    if (!contacts) {
+    if (!contacts || []) {
       res.sendStatus(204);
     }
 
