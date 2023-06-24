@@ -9,15 +9,26 @@ const {
   updateFavorite,
 } = require("./../../controllers/contactOperations");
 
+const tokenMiddleware = require("./../../middlewares/tokenMiddleware");
+
 const {
   addContactSchema,
   updateContactSchema,
   favoriteSchema,
 } = require("../../models/contacts");
 
-router.get("/", async (_, res) => {
+// const {userSchema} = require("../../models/userModel");
+
+router.get("/", tokenMiddleware, async (req, res) => {
   try {
-    const contacts = await listContacts();
+    console.log(req.user.userId);
+    const contacts = await listContacts(req.user.userId);
+
+    if (!contacts || contacts.length === 0) {
+      console.log("no contacts");
+      res.status(204);
+    }
+
     res.status(200).json(contacts);
   } catch (err) {
     console.warn(err.message);
@@ -35,15 +46,15 @@ router.get("/:contactId", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", tokenMiddleware, async (req, res) => {
   try {
-    const { error } = addContactSchema.validate(req.body);
-    console.log(error);
-    if (error) {
+    const data = addContactSchema.validate(req.body);
+    console.log(data);
+    if (data.error) {
       res.status(400).json({ message: "missing required field" });
     } else {
-      const newContact = await addContact(req.body);
-
+      const id = req.user;
+      const newContact = await addContact(req.body, id.userId);
       res.status(201).json(newContact);
     }
   } catch (err) {
