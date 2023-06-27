@@ -146,7 +146,9 @@ router.patch(
       user.avatarURL = `/avatars/${filename}`;
       await user.save();
 
-      return res.status(200).json({ avatarURL: user.avatarUrl });
+      return res
+        .status(200)
+        .json({ avatarURL: user.avatarURL, message: "avatar updated" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
