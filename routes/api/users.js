@@ -70,7 +70,7 @@ router.get("/verify/:verificationToken", async (req, res) => {
   }
 
   await User.findByIdAndUpdate(user.id, {
-    verificationToken: null,
+    verificationToken: "null", // regular null won't work because it's not a string
     verify: true,
   });
 
